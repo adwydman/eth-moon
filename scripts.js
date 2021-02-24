@@ -40,6 +40,8 @@
   let ethereumPrice;
   let yourMoonPrice = null
 
+  progressBar.style.width = 0;
+
   const parseYourMoonPrice = (moonPrice) => {
     yourMoonPrice = moonPrice;
     if (yourMoonPrice < 0) {
@@ -60,7 +62,7 @@
     }
     else {
       percentToMoon.style.display = 'none';
-      document.title = `$${parseFloat(ethereumPrice).toFixed(2)} - Dogecoin is mooning!`
+      document.title = `$${parseFloat(ethereumPrice).toFixed(2)} - Eth is mooning!`
     }
   };
 
