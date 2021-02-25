@@ -156,11 +156,6 @@
     });
   }
 
-  setInterval(() => {
-    getEthereumPrice()
-  }, 2000)
-
-
   menu.addEventListener('click', (event) => {
     if (event.target.innerText !== 'More data') {
       main.classList.add('zoom-out');
@@ -229,6 +224,10 @@
           }
           setYourMoon(sliderX);
         }, 1000);
+
+        setInterval(() => {
+          getEthereumPrice()
+        }, 2000)
       })
   })
 
