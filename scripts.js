@@ -22,13 +22,15 @@
   const didEthereumMoon = document.querySelector('.did-dogecoin-moon');
   const whatIsDogecoin = document.querySelector('#what-is-dogecoin');
   const whatIsMoon = document.querySelector('#what-is-moon');
-  const donate = document.querySelector('#donate');
+  const donate = document.querySelector('#support');
   const contentElement = document.querySelector('.content');
   const percentToMoon = document.querySelector('.percent-to-moon');
   const yourMoonWrapperChevronDown = document.querySelector('.your-moon-wrapper-chevron-down');
   const sliderElement = document.querySelector('.slider')
   const textElement = document.querySelector('.text')
   const yourMoonLabel = document.querySelector('.your-moon-label');
+  const loadingContainer = document.querySelector('.loading');
+  const mainWrapper = document.querySelector('.main-wrapper');
 
   let maxWidth;
   let sliderX = 0;
@@ -36,7 +38,7 @@
   let isMobile = false;
   let mouseX = 0;
   let currentDollarRange = 5000;
-  let currentPriceMultiplier = 5000;
+  let currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange);
   let ethereumPrice;
   let yourMoonPrice = null
 
@@ -129,11 +131,11 @@
   }
 
   const getEthereumPrice = (initialLoad) => {
-    fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+    return fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
     .then((response) => response.json())
     .then((result) => {
       ethereumPrice = result.ethereum.usd;
-      localStorage.setItem('ethereumPrice', ethereumPrice);
+      // localStorage.setItem('ethereumPrice', ethereumPrice);
   
       currentPrice.textContent = `$${parseFloat(ethereumPrice).toFixed(2)}`;
       currentPriceWrapper.style.left = `${ethereumPrice * currentPriceMultiplier}%`
@@ -154,7 +156,6 @@
     });
   }
 
-  getEthereumPrice(true);
   setInterval(() => {
     getEthereumPrice()
   }, 2000)
@@ -191,30 +192,44 @@
   })
 
   window.addEventListener('load', function() {
-    const moonPrice = localStorage.getItem('yourMoon') || parseFloat(4000).toFixed(2);
-    ethereumPrice = localStorage.getItem('ethereumPrice');
-    currentDollarRange = parseFloat(localStorage.getItem('dollarRange')) || 5000;
-    currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange)
+    getEthereumPrice(true)
+      .then(() => {
+        loadingContainer.classList.add('zoom-out')
+        mainWrapper.classList.add('fade-in');
 
-    maxDollarRange.textContent = `$${parseFloat(currentDollarRange)}`;
-
-    yourMoon.textContent = `$${moonPrice}`;
-    progressBar.style.width = `${ethereumPrice * currentPriceMultiplier}%`;
-
-    if (currentDollarRange === 5000) {
-      down.style.display = 'none';
-    }
-
-    ethereumMoonHandler(moonPrice, ethereumPrice);
-
-    setTimeout(() => {
-      contentElement.classList.add('open-up');
-      maxWidth = sliderElement.getBoundingClientRect().width;
-      if (moonPrice > 0) {
-        sliderX = moonPrice * maxWidth * currentPriceMultiplier / 100
-      }
-      setYourMoon(sliderX);
-    }, 500);
+        const moonPrice = localStorage.getItem('yourMoon') || parseFloat(4000).toFixed(2);
+        ethereumPrice = localStorage.getItem('ethereumPrice');
+        currentDollarRange = parseFloat(localStorage.getItem('dollarRange')) || 5000;
+        currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange)
+    
+        maxDollarRange.textContent = `$${parseFloat(currentDollarRange)}`;
+    
+        yourMoon.textContent = `$${moonPrice}`;
+        if (ethereumPrice) {
+          progressBar.style.width = `${ethereumPrice * currentPriceMultiplier}%`;
+          currentPrice.textContent = `$${parseFloat(ethereumPrice).toFixed(2) }`;
+          currentPriceWrapper.style.left = `${ethereumPrice * currentPriceMultiplier}%`
+          percentToMoonHandler(moonPrice);
+        }
+    
+        if (currentDollarRange === 5000) {
+          down.style.display = 'none';
+        }
+        ethereumMoonHandler(moonPrice, ethereumPrice);
+    
+        setTimeout(() => {
+          textElement.classList.add('fade-in');
+        }, 500);
+        
+        setTimeout(() => {
+          contentElement.classList.add('open-up');
+          maxWidth = sliderElement.getBoundingClientRect().width;
+          if (moonPrice > 0) {
+            sliderX = moonPrice * maxWidth * currentPriceMultiplier / 100
+          }
+          setYourMoon(sliderX);
+        }, 1000);
+      })
   })
 
   const progressDragMobile = function(event) {

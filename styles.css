@@ -24,6 +24,7 @@ body {
   overflow: hidden;
   width: 100%;
   height: 100%;
+  background-color: black;
 }
 
 .background {
@@ -43,6 +44,37 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.loading-element {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+  }
+  70% {
+    transform: scale(1.20);
+  }
+  100% {
+    transform: scale(0.95);
+  }
+}
+
+.main-wrapper {
+  opacity: 0;
+}
+
 
 main {
   width: 100%;
@@ -85,7 +117,7 @@ h1 {
 h2 {
   font-size: 2rem;
   letter-spacing: 0.5rem;
-  padding: 1rem 0 2rem 0;
+  padding: 0 0 2rem 0;
   text-align: center;
 }
 
@@ -105,6 +137,14 @@ p {
 a {
   text-decoration: none;
   font-size: 1.5rem;
+}
+
+.menu-text p {
+  text-align: center
+}
+
+.menu-text a {
+  text-decoration: underline;
 }
 
 code {
@@ -139,7 +179,7 @@ code {
   display: none;
 }
 
-#donate {
+#support {
   display: none;
 }
 
@@ -190,8 +230,6 @@ code {
 
 .text-container {
   display: none;
-  width: 60rem;
-  height: 40rem;
   opacity: 0;
   background-color: black;
   border-radius: 4px;
@@ -221,7 +259,7 @@ code {
 .close-icon:hover {
   cursor: pointer;
   border-radius: 100%;
-  .-color: rgba(255, 255, 255, 0.075);
+  background-color: rgba(255, 255, 255, 0.075);
   transition: background-color .1s ease-in;
 }
 
@@ -443,6 +481,10 @@ footer {
     padding: 1rem 0;
   }
 
+  .menu-text a {
+    font-size: 1rem;
+  }
+
   code {
     font-size: 1rem;
     padding: 0.25rem;
@@ -469,14 +511,14 @@ footer {
     animation-name: openUpContentMobile !important;
   }
   
-
   .menu {
     flex-direction: column;
-    margin-top: 3rem;
+    margin-top: 4rem;
   }
+
   .menu:before {
-    height: 3rem;
-    top: -3rem;
+    height: 4rem;
+    top: -4rem;
   }
 
   .menu-option:first-child,
@@ -507,7 +549,6 @@ footer {
 
   .text-container {
     width: 90%;
-    height: 75%;
   }
 
 }
@@ -599,6 +640,7 @@ footer {
 
 @keyframes zoomOut {
   0% {
+    opacity: 1;
   }
   100% {
     opacity: 0;
