@@ -380,6 +380,10 @@ code {
   transform: translate(-50%, 0);
 }
 
+.transition-left-slow {
+  transition: left 1.3s ease-in-out;
+}
+
 .price-text {
   color: white;
   font-size: 1.5rem;
@@ -429,14 +433,74 @@ code {
 }
 
 .up {
-  background-image: url(images/up.png);
+  background-image: url(images/chevron.png);
   top: -1.5rem;
 }
 
 .down {
-  background-image: url(images/down.png);
+  background-image: url(images/chevron.png);
+  transform: rotate(180deg);
   bottom: -1.5rem;
 }
+
+.left {
+  background-image: url(images/chevron.png);
+  transform: rotate(-90deg);
+  cursor: pointer;
+  position: absolute;
+  width: 16px;
+  height: 11px;
+  top: 6px;
+  left: -12px;
+}
+
+.left-animation {
+  animation: chevronMoveLeft 1s infinite ease-out;
+}
+
+.right {
+  background-image: url(images/chevron.png);
+  transform: rotate(90deg);
+  cursor: pointer;
+  position: absolute;
+  width: 16px;
+  height: 11px;
+  top: 6px;
+  right: -12px;
+}
+
+.right-animation {
+  animation: chevronMoveRight 1s infinite ease-out;
+}
+
+@keyframes chevronMoveLeft {
+  0% {
+    left: -12px;
+    opacity: 1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    left: -18px;
+    opacity: 0;
+  }
+}
+
+@keyframes chevronMoveRight {
+  0% {
+    right: -12px;
+    opacity: 1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    right: -18px;
+    opacity: 0;
+  }
+}
+
 
 footer {
   position: absolute;

@@ -17,12 +17,11 @@
   const maxDollarRange = document.querySelector('.max-dollar-range');
   const up = document.querySelector('.up');
   const down = document.querySelector('.down');
+  const left = document.querySelector('.left');
+  const right = document.querySelector('.right');
   const saveIcon = document.querySelector('.save-icon');
   const checkIcon = document.querySelector('.check-icon');
   const didEthereumMoon = document.querySelector('.did-dogecoin-moon');
-  const whatIsDogecoin = document.querySelector('#what-is-dogecoin');
-  const whatIsMoon = document.querySelector('#what-is-moon');
-  const donate = document.querySelector('#support');
   const contentElement = document.querySelector('.content');
   const percentToMoon = document.querySelector('.percent-to-moon');
   const yourMoonWrapperChevronDown = document.querySelector('.your-moon-wrapper-chevron-down');
@@ -32,12 +31,15 @@
   const loadingContainer = document.querySelector('.loading');
   const mainWrapper = document.querySelector('.main-wrapper');
 
+  const INITIAL_MOON = 3000;
+
+  let transitionLeftTimer = null;
   let maxWidth;
   let sliderX = 0;
   let mouseDown = false;
   let isMobile = false;
   let mouseX = 0;
-  let currentDollarRange = 5000;
+  let currentDollarRange = parseFloat(localStorage.getItem('dollarRange')) || 5000;
   let currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange);
   let ethereumPrice;
   let yourMoonPrice = null
@@ -135,14 +137,13 @@
     .then((response) => response.json())
     .then((result) => {
       ethereumPrice = result.ethereum.usd;
-      // localStorage.setItem('ethereumPrice', ethereumPrice);
   
       currentPrice.textContent = `$${parseFloat(ethereumPrice).toFixed(2)}`;
       currentPriceWrapper.style.left = `${ethereumPrice * currentPriceMultiplier}%`
       progressBar.style.width = `${ethereumPrice * currentPriceMultiplier}%`;
   
       if (!yourMoonPrice) {
-        yourMoonPrice = localStorage.getItem('yourMoon') || parseFloat(4000).toFixed(2);
+        yourMoonPrice = localStorage.getItem('yourMoon') || parseFloat(INITIAL_MOON).toFixed(2);
       }
 
       if (initialLoad) {
@@ -161,16 +162,6 @@
       main.classList.add('zoom-out');
       background.classList.add('content-blur');
       textContainer.classList.add('appear');
-
-      if (event.target.innerText === 'DogeCoin?') {
-        whatIsDogecoin.style.display = 'block';
-      }
-      if (event.target.innerText === 'Moon?') {
-        whatIsMoon.style.display = 'block';
-      }
-      if (event.target.innerText === 'Donate') {
-        donate.style.display = 'block';
-      }
     }
   });
 
@@ -181,32 +172,31 @@
     main.classList.remove('zoom-out');
     background.classList.remove('content-blur');
     background.classList.add('reverse-content-blur');
-    whatIsDogecoin.style.display = 'none';
-    whatIsMoon.style.display = 'none';
-    donate.style.display = 'none';
   })
 
   window.addEventListener('load', function() {
     getEthereumPrice(true)
       .then(() => {
+        if (!localStorage.getItem('alreadyRun')) {
+          left.classList.add('left-animation')
+          right.classList.add('right-animation')
+          localStorage.setItem('alreadyRun', true)
+        } else {
+          left.style.display = 'none';
+          right.style.display = 'none'
+        }
+
         loadingContainer.classList.add('zoom-out')
         mainWrapper.classList.add('fade-in');
 
-        const moonPrice = localStorage.getItem('yourMoon') || parseFloat(4000).toFixed(2);
-        ethereumPrice = localStorage.getItem('ethereumPrice');
+        const moonPrice = localStorage.getItem('yourMoon') || parseFloat(INITIAL_MOON).toFixed(2);
         currentDollarRange = parseFloat(localStorage.getItem('dollarRange')) || 5000;
         currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange)
     
         maxDollarRange.textContent = `$${parseFloat(currentDollarRange)}`;
     
         yourMoon.textContent = `$${moonPrice}`;
-        if (ethereumPrice) {
-          progressBar.style.width = `${ethereumPrice * currentPriceMultiplier}%`;
-          currentPrice.textContent = `$${parseFloat(ethereumPrice).toFixed(2) }`;
-          currentPriceWrapper.style.left = `${ethereumPrice * currentPriceMultiplier}%`
-          percentToMoonHandler(moonPrice);
-        }
-    
+
         if (currentDollarRange === 5000) {
           down.style.display = 'none';
         }
@@ -244,6 +234,12 @@
   }
 
   const progressDrag = (clientX) => {
+    moonIcon.classList.remove('transition-left-slow');
+    yourMoonWrapperChevronDown.classList.remove('transition-left-slow');
+    yourMoonWrapper.classList.remove('transition-left-slow');
+    left.style.display = 'none';
+    right.style.display = 'none';
+
     var deltaX = clientX - mouseX;
     mouseX = clientX;
     sliderX += deltaX;
@@ -355,7 +351,19 @@
     checkIcon.classList.add('check-icon-appear');
   });
 
+
   const onPriceControlClick = (direction) => {
+    if (transitionLeftTimer) {
+      clearTimeout(transitionLeftTimer)
+    }
+    moonIcon.classList.add('transition-left-slow');
+    yourMoonWrapperChevronDown.classList.add('transition-left-slow');
+    yourMoonWrapper.classList.add('transition-left-slow');
+    transitionLeftTimer = setTimeout(() => {
+      moonIcon.classList.remove('transition-left-slow');
+      yourMoonWrapperChevronDown.classList.remove('transition-left-slow');
+      yourMoonWrapper.classList.remove('transition-left-slow');
+    }, 1500)
     currentDollarRange += 5000 * direction;
 
     sliderX = (sliderX * (currentDollarRange + 5000 * (-direction))) / (currentDollarRange);
