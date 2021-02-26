@@ -177,10 +177,9 @@
   window.addEventListener('load', function() {
     getEthereumPrice(true)
       .then(() => {
-        if (!localStorage.getItem('alreadyRun')) {
+        if (!localStorage.getItem('alreadyMovedMoon')) {
           left.classList.add('left-animation')
           right.classList.add('right-animation')
-          localStorage.setItem('alreadyRun', true)
         } else {
           left.style.display = 'none';
           right.style.display = 'none'
@@ -234,6 +233,11 @@
   }
 
   const progressDrag = (clientX) => {
+    if (!localStorage.getItem('alreadyMovedMoon')) {
+      localStorage.setItem('alreadyMovedMoon', true);
+      left.style.display = 'none';
+      right.style.display = 'none'
+    }
     moonIcon.classList.remove('transition-left-slow');
     yourMoonWrapperChevronDown.classList.remove('transition-left-slow');
     yourMoonWrapper.classList.remove('transition-left-slow');
