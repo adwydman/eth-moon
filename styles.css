@@ -455,7 +455,7 @@ code {
   width: 16px;
   height: 11px;
   top: 6px;
-  left: -12px;
+  left: -17px;
 }
 
 .left-animation {
@@ -470,7 +470,7 @@ code {
   width: 16px;
   height: 11px;
   top: 6px;
-  right: -12px;
+  right: -16px;
 }
 
 .right-animation {
@@ -479,28 +479,28 @@ code {
 
 @keyframes chevronMoveLeft {
   0% {
-    left: -12px;
+    left: -17px;
     opacity: 1;
   }
   20% {
     opacity: 1;
   }
   100% {
-    left: -18px;
+    left: -23px;
     opacity: 0;
   }
 }
 
 @keyframes chevronMoveRight {
   0% {
-    right: -12px;
+    right: -16px;
     opacity: 1;
   }
   20% {
     opacity: 1;
   }
   100% {
-    right: -18px;
+    right: -22px;
     opacity: 0;
   }
 }
