@@ -373,7 +373,6 @@ code {
 
 .moon-icon {
   position: absolute;
-  top: 18%;
   font-size: 2rem;
   cursor: grab;
   z-index: 9;
