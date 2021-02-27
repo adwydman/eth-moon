@@ -377,6 +377,9 @@ code {
   cursor: grab;
   z-index: 9;
   transform: translate(-50%, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .transition-left-slow {
