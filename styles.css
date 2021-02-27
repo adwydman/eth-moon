@@ -377,6 +377,8 @@ code {
   cursor: grab;
   z-index: 9;
   transform: translate(-50%, 0);
+  width: 2rem;
+  height: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
