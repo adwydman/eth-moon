@@ -329,6 +329,18 @@
     yourMoonLabel.innerHTML = 'Your moon:';
   });
 
+  yourEthTextbox.addEventListener('focus', (event) => {
+    if (window.screen.width < 800) {
+      document.querySelector('footer').style.opacity = 0;
+    }
+  });
+
+  yourEthTextbox.addEventListener('blur', (event) => {
+    if (window.screen.width < 800) {
+      document.querySelector('footer').style.opacity = 1;
+    }
+  });
+
   yourEthTextbox.addEventListener('input', (event) => {
     const inputValue = event.target.value;
     const numericValue = inputValue.replaceAll(/([^0-9.])/g, '');
