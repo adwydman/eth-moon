@@ -30,6 +30,8 @@
   const yourMoonLabel = document.querySelector('.your-moon-label');
   const loadingContainer = document.querySelector('.loading');
   const mainWrapper = document.querySelector('.main-wrapper');
+  const yourEthTextbox = document.querySelector('.your-eth-textbox');
+  const valueOfYourEthContainer = document.querySelector('.value-of-your-eth');
 
   const INITIAL_MOON = 3000;
 
@@ -43,6 +45,7 @@
   let currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange);
   let ethereumPrice;
   let yourMoonPrice = null
+  let yourEthValue = parseFloat(localStorage.getItem('yourEth')) || 0;
 
   progressBar.style.width = 0;
 
@@ -137,7 +140,8 @@
     .then((response) => response.json())
     .then((result) => {
       ethereumPrice = result.ethereum.usd;
-  
+      
+      valueOfYourEthContainer.textContent = `${parseFloat(ethereumPrice * yourEthValue).toFixed(2)}`;
       currentPrice.textContent = `$${parseFloat(ethereumPrice).toFixed(2)}`;
       currentPriceWrapper.style.left = `${ethereumPrice * currentPriceMultiplier}%`
       progressBar.style.width = `${ethereumPrice * currentPriceMultiplier}%`;
@@ -147,6 +151,8 @@
       }
 
       if (initialLoad) {
+        yourEthTextbox.value = yourEthValue;
+
         while(ethereumPrice / currentDollarRange > 0.8) {
           onPriceControlClick(1);
         }
@@ -321,6 +327,17 @@
 
   moonIcon.addEventListener('mouseout', () => {
     yourMoonLabel.innerHTML = 'Your moon:';
+  });
+
+  yourEthTextbox.addEventListener('input', (event) => {
+    const inputValue = event.target.value;
+    const numericValue = inputValue.replaceAll(/([^0-9.])/g, '');
+
+    if (!isNaN(numericValue)) {
+      yourEthValue = numericValue;
+      localStorage.setItem('yourEth', yourEthValue);
+      valueOfYourEthContainer.textContent = `${parseFloat(yourEthValue * ethereumPrice).toFixed(2)}`
+    }
   });
 
   document.addEventListener('mousemove', progressDragBrowser);

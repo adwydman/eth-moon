@@ -32,6 +32,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-color: black;
+  left: 5px;
 }
 
 .black-bg {
@@ -106,6 +107,7 @@ main {
   opacity: 0;
   transition: padding 0.75s ease;
   text-align: center;
+  width: 100%;
 }
 
 h1 {
@@ -475,6 +477,48 @@ code {
 
 .right-animation {
   animation: chevronMoveRight 1s infinite ease-out;
+}
+
+.input-area {
+  margin: 4rem 0 3rem -4px;
+}
+
+.your-eth-textbox {
+  font-size: 2rem;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid white;
+  margin-left: .5rem;
+  width: 11rem;
+  text-align: right;
+}
+
+.equals {
+  margin: 0 1rem;
+  font-size: 2rem;
+}
+
+.dollar-sign {
+  margin-right: -3px;
+  display: inline;
+  font-size: 2rem;
+  border-bottom: 1px solid white;
+}
+
+.ethereum-sign {
+  margin-right: -8px;
+  display: inline;
+  font-size: 2rem;
+  border-bottom: 1px solid white;
+}
+
+.value-of-your-eth {
+  display: inline-block;
+  font-size: 2rem;
+  border-bottom: 1px solid white;
+  width: 11rem;
+  text-align: right;
+  height: 27px;
 }
 
 @keyframes chevronMoveLeft {
