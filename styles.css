@@ -480,7 +480,10 @@ code {
 }
 
 .input-area {
+  position: relative;
   margin: 4rem 0 3rem -4px;
+  display: flex;
+  justify-content: center;
 }
 
 .your-eth-textbox {
@@ -519,6 +522,34 @@ code {
   width: 11rem;
   text-align: right;
   height: 27px;
+}
+
+.value-of-eth-wrapper {
+  position: relative;
+}
+
+.moon-value-of-your-eth {
+  position: absolute;
+  right: 0;
+  top: -2.5rem;
+  opacity: 0.7;
+  font-size: 1.5rem;
+}
+
+.save-icon2 {
+  display: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.check-icon2 {
+  display: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.input-save-icon-wrapper {
+  position: relative;
 }
 
 @keyframes chevronMoveLeft {
@@ -668,7 +699,7 @@ footer {
 /* Animations */
 
 .check-icon-appear {
-  display: block;
+  display: inline-block;
   animation-name: checkIconAppear;
   animation-duration: 1.1s;
   animation-delay: 0.5s;
@@ -680,10 +711,13 @@ footer {
     opacity: 1;
     position: relative;
   }
-  100% {
+  50% {
     opacity: 0;
-    position: absolute;
     z-index: 0;
+  }
+  100%{
+    position: absolute;
+    opacity: 0
   }
 }
 
@@ -699,12 +733,10 @@ footer {
 @keyframes reverseAppear {
   0% {
     opacity: 0.8;
-    /* transform: translate(-50%, -50%) scale(1.0); */
   }
 
   100%{
     opacity: 0;
-    /* transform: translate(-50%, -50%) scale(0.9); */
     visibility: hidden;
   }
 }
@@ -721,11 +753,9 @@ footer {
 @keyframes appear {
   0% {
     opacity: 0;
-    /* transform: translate(-50%, -50%) scale(0.9); */
   }
   100% {
     opacity: 0.8;
-    /* transform: translate(-50%, -50%) scale(1.0); */
   }
 }
 

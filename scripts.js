@@ -20,7 +20,9 @@
   const left = document.querySelector('.left');
   const right = document.querySelector('.right');
   const saveIcon = document.querySelector('.save-icon');
+  const saveIcon2 = document.querySelector('.save-icon2');
   const checkIcon = document.querySelector('.check-icon');
+  const checkIcon2 = document.querySelector('.check-icon2');
   const didEthereumMoon = document.querySelector('.did-dogecoin-moon');
   const contentElement = document.querySelector('.content');
   const percentToMoon = document.querySelector('.percent-to-moon');
@@ -32,6 +34,7 @@
   const mainWrapper = document.querySelector('.main-wrapper');
   const yourEthTextbox = document.querySelector('.your-eth-textbox');
   const valueOfYourEthContainer = document.querySelector('.value-of-your-eth');
+  const moonValueOfYourEthLabel = document.querySelector('.moon-value-of-your-eth');
 
   const INITIAL_MOON = 3000;
 
@@ -45,7 +48,7 @@
   let currentPriceMultiplier = calculatePriceMultiplier(currentDollarRange);
   let ethereumPrice;
   let yourMoonPrice = null
-  let yourEthValue = parseFloat(localStorage.getItem('yourEth')) || 0;
+  let yourEthValue = parseFloat(localStorage.getItem('yourEth')) || 1;
 
   progressBar.style.width = 0;
 
@@ -201,6 +204,7 @@
         maxDollarRange.textContent = `$${parseFloat(currentDollarRange)}`;
     
         yourMoon.textContent = `$${moonPrice}`;
+        moonValueOfYourEthLabel.textContent = `($${parseFloat(yourEthValue * moonPrice).toFixed(2)})`;
 
         if (currentDollarRange === 5000) {
           down.style.display = 'none';
@@ -257,6 +261,8 @@
     const progressMoved = sliderX / maxWidth;
 
     const moonPrice = parseFloat(progressMoved * currentDollarRange).toFixed(2);
+
+    moonValueOfYourEthLabel.textContent = `($${parseFloat(yourEthValue * moonPrice).toFixed(2)})`;
 
     setYourMoon(sliderX, deltaX, clientX);
     parseYourMoonPrice(moonPrice);
@@ -342,12 +348,16 @@
   });
 
   yourEthTextbox.addEventListener('input', (event) => {
+    checkIcon2.classList.remove('check-icon-appear');
     const inputValue = event.target.value;
     const numericValue = inputValue.replaceAll(/([^0-9.])/g, '');
 
     if (!isNaN(numericValue)) {
       yourEthValue = numericValue;
-      localStorage.setItem('yourEth', yourEthValue);
+      if (yourEthValue.toString() !== localStorage.getItem('yourEth')) {
+        saveIcon2.style.display = 'inline-block';
+      }
+      moonValueOfYourEthLabel.textContent = `($${parseFloat(yourEthValue * yourMoonPrice).toFixed(2)})`;
       valueOfYourEthContainer.textContent = `${parseFloat(yourEthValue * ethereumPrice).toFixed(2)}`
     }
   });
@@ -384,6 +394,11 @@
     checkIcon.classList.add('check-icon-appear');
   });
 
+  saveIcon2.addEventListener('click', () => {
+    localStorage.setItem('yourEth', yourEthValue);
+    saveIcon2.style.display = 'none';
+    checkIcon2.classList.add('check-icon-appear');
+  });
 
   const onPriceControlClick = (direction) => {
     if (transitionLeftTimer) {
